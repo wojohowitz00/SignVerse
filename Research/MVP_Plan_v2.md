@@ -1,29 +1,30 @@
-# SignVerse MVP Plan v2.0
-## Risk-Mitigated Approach
+# SignVerse MVP Plan v2.1
+## Video-Only, Risk-Mitigated Approach
 
-**Version**: 2.0
+**Version**: 2.1
 **Date**: 2026-01-10
-**Status**: Proposed
+**Status**: Approved
 
 ---
 
 ## Executive Summary
 
-This revised plan addresses critical issues identified in the initial architecture:
+This plan uses a **video-only approach** for sign demonstrations - no 3D avatars in MVP. This dramatically simplifies development while providing authentic, effective learning content.
 
 | Issue | Original Risk | Mitigation |
 |-------|---------------|------------|
 | Biometric privacy | Legal liability | Explicit consent + differential privacy |
 | Emergency scenario | Safety liability | **Removed from MVP** |
-| Unity-iOS stability | Architecture failure | Validate first, fallback to RealityKit |
+| 3D Avatar complexity | Development time, uncanny valley | **Video-only for MVP** |
 | Hand occlusion | Core functionality | Start with fingerspelling (no occlusion) |
 | Unrealistic timeline | Project failure | Phase gates with go/no-go decisions |
 
-**Key Changes**:
-1. **Phase reordering**: Validate tracking BEFORE building avatars
+**Key Decisions**:
+1. **Video-only**: Pre-recorded videos of native signer (no Unity, no RealityKit for MVP)
 2. **Scope reduction**: 4 scenarios (emergency removed)
 3. **Privacy-first**: Biometric consent + on-device processing
 4. **Go/No-Go gates**: Each phase has exit criteria before proceeding
+5. **Pure iOS**: SwiftUI + AVFoundation + Vision Framework only
 
 ---
 
@@ -149,35 +150,56 @@ struct BiometricConsentView: View {
 ### Phase 0: Technical Validation (Week 1)
 **Goal**: Prove core technology works BEFORE building features
 
-#### 0.1 Unity-iOS Integration Test
-```
-GO/NO-GO CRITERIA:
-─────────────────────────────────
-□ UnityFramework loads in iOS app without crash
-□ Can pass data bidirectionally (Swift ↔ C#)
-□ Memory stays under 500MB during 5-minute session
-□ No thermal throttling on iPhone 12
+**Architecture**: Pure iOS (no Unity, no RealityKit)
+- SwiftUI for UI
+- AVFoundation + AVPlayer for video playback
+- Vision Framework for hand tracking
+- CoreML for gesture recognition
 
-IF FAIL → Pivot to RealityKit/SceneKit
-─────────────────────────────────
-```
-
-#### 0.2 Hand Tracking Accuracy Test
+#### 0.1 Hand Tracking Test
 ```
 GO/NO-GO CRITERIA:
 ─────────────────────────────────
 □ Vision Framework detects hand in kitchen lighting
 □ 21 keypoints tracked at >25 FPS
 □ Static fingerspelling poses recognized >90%
-□ Works with your specific hand (post-surgery considerations)
+□ Works with your specific hand characteristics
+□ Camera + skeleton overlay displays smoothly
 
 IF FAIL → Evaluate MediaPipe or custom model
 ─────────────────────────────────
 ```
 
+#### 0.2 Video Playback Test
+```
+GO/NO-GO CRITERIA:
+─────────────────────────────────
+□ Video plays smoothly in split-screen with camera
+□ Slow-motion playback works (0.5x speed)
+□ Loop/replay controls responsive
+□ Memory stable during extended use (<200MB)
+
+IF FAIL → Optimize video encoding/compression
+─────────────────────────────────
+```
+
+#### 0.3 Sample Content Creation
+```
+VALIDATION:
+─────────────────────────────────
+□ Record 5 sample sign videos (yourself or family)
+□ Videos are clear and demonstrate signs effectively
+□ Lighting works in intended practice locations
+□ Video quality sufficient for learning
+
+OUTPUT: Proof that video-based approach is viable
+─────────────────────────────────
+```
+
 **Deliverables**:
-- Technical feasibility report
-- Video of working prototype (even if ugly)
+- Working prototype: camera + video split-screen
+- Hand tracking overlay demonstration
+- 5 sample sign videos
 - Go/No-Go decision for Phase 1
 
 ---
@@ -313,33 +335,32 @@ class OcclusionHandler {
 }
 ```
 
-#### Avatar Decision Point
+#### Video Content Strategy
 
 ```
-DECISION: Avatar Technology
+DECISION: Video-Only (Confirmed)
 ─────────────────────────────────
-Option A: Unity 3D Avatar
-  + Realistic, customizable
-  - Complex integration, uncanny valley risk
-  - Requires 3D animation assets ($$$)
+Pre-recorded videos of native ASL signer
 
-Option B: Pre-recorded Video
-  + Authentic signing, no uncanny valley
-  + Cheaper to produce (record native signer)
-  - Less customizable
-  - Larger app size
+ADVANTAGES:
+✓ Authentic human signing (no uncanny valley)
+✓ Natural facial expressions (critical for ASL)
+✓ Fast to produce ($0-500 total)
+✓ Proven effective (how most ASL apps work)
+✓ Simple implementation (just AVPlayer)
+✓ No 3D framework complexity
 
-Option C: 2D Animated Illustrations
-  + Simple, clear, not creepy
-  + Easy to produce
-  - Less engaging than video
-  - May not show 3D spatial relationships
+CONTENT PLAN:
+• Self-record OR hire ASL tutor for 2-3 hours
+• 41 signs × 10-15 seconds each = ~10 minutes of video
+• Multiple angles for complex signs
+• Slow-motion versions for detailed study
 
-RECOMMENDATION FOR MVP: Option B (Video)
+APP SIZE IMPACT:
+• ~5MB per sign (compressed H.264)
+• 41 signs = ~200MB
+• Can stream from CDN if size is concern
 ─────────────────────────────────
-Rationale: Validate learning effectiveness before
-investing in 3D avatar technology. Can upgrade to
-Unity in v2.0 if video proves concept.
 ```
 
 **Deliverables**:
@@ -350,7 +371,7 @@ Unity in v2.0 if video proves concept.
 
 **Go/No-Go for Phase 3**:
 ```
-□ 15 signs recognized >85% accuracy
+□ 15 signs recognized >95% accuracy
 □ User can have basic "conversation" with family
 □ Motion signs feel natural to perform
 □ Family members can understand user's signs
@@ -543,18 +564,20 @@ nodes:
 
 ```
 Week 1:     Phase 0 - Technical Validation
-            ├── Unity-iOS integration test
-            └── Hand tracking accuracy test
+            ├── Hand tracking in home lighting
+            ├── Video playback + camera split-screen
+            └── Record 5 sample sign videos
             GO/NO-GO DECISION
 
 Weeks 2-3:  Phase 1 - Fingerspelling (A-Z)
             ├── Static pose recognition
+            ├── Reference images/videos for alphabet
             └── Basic practice UI
             GO/NO-GO DECISION
 
 Weeks 4-6:  Phase 2 - Motion Signs (15 signs)
             ├── Motion recognition
-            ├── Reference videos
+            ├── Record/source 15 sign videos
             └── Occlusion handling
             GO/NO-GO DECISION
 
@@ -567,10 +590,17 @@ Weeks 7-9:  Phase 3 - Learning Loop
 Weeks 10-14: Phase 4 - Conversations
             ├── Scenario engine
             ├── Pre-scripted dialogues
+            ├── Record conversation videos
             └── Two-way practice
 
 TOTAL: 14 weeks to full MVP
-       (vs original 10 weeks - more realistic)
+
+TECH STACK (Simplified):
+• SwiftUI (UI)
+• AVFoundation (video playback)
+• Vision Framework (hand tracking)
+• CoreML (gesture recognition)
+• NO Unity, NO RealityKit for MVP
 ```
 
 ---
@@ -584,42 +614,47 @@ TOTAL: 14 weeks to full MVP
 | Biometric privacy | No disclosure | Explicit consent + differential privacy |
 | Emergency scenario | Included | **Removed from MVP** |
 
-### P1 Issues (Addressed)
+### P1 Issues (Eliminated)
 
 | Issue | Original | Mitigation |
 |-------|----------|------------|
-| Unity-iOS stability | Assumed working | Phase 0 validation, fallback plan |
+| Unity-iOS stability | Complex integration | **Eliminated** - Video-only, pure iOS |
+| RealityKit complexity | 3D rendering | **Eliminated** - Video-only approach |
 | Hand occlusion | Full signs immediately | Start with fingerspelling, progressive complexity |
+| Uncanny valley | 3D avatar | **Eliminated** - Real human in videos |
 
-### P2 Issues (Partially Addressed)
+### P2 Issues (Addressed)
 
 | Issue | Original | Mitigation |
 |-------|----------|------------|
-| No ASL generation model | Unity avatar | Pre-recorded video (simpler) |
+| No ASL generation model | Needed for avatar | **N/A** - Pre-recorded video |
 | Dataset mismatch | Generic datasets | User's own data from Phase 3 |
+| App size | Video files large | Compress H.264, optional CDN streaming |
 
 ---
 
 ## Budget Considerations
 
-### Minimal Viable Cost
+### MVP Cost (Video-Only Approach)
 
 | Item | Cost | Notes |
 |------|------|-------|
 | Apple Developer Account | $99/year | Required for device testing |
 | Supabase | $0 (free tier) | Sufficient for MVP |
-| Video Production | $0-500 | Self-record or hire ASL tutor |
-| Reference Images | $0 | Use ASL Alphabet dataset |
-| **Total MVP** | **~$100-600** | |
+| Video Production | $0-200 | Self-record or hire ASL tutor for 2-3 hours |
+| Reference Images | $0 | Use ASL Alphabet dataset (public) |
+| **Total MVP** | **~$100-300** | |
 
-### If Unity Avatar Route (Not Recommended for MVP)
+### Video Production Options
 
-| Item | Cost | Notes |
-|------|------|-------|
-| Unity Pro | $2,040/year | For iOS deployment |
-| 3D Avatar Asset | $50-500 | Humanoid rig |
-| Animation Production | $2,000-10,000 | 41 signs × $50-250/sign |
-| **Total** | **$4,000-12,500** | |
+| Option | Cost | Quality | Time |
+|--------|------|---------|------|
+| Self-record | $0 | Learning quality | 2-4 hours |
+| Family member who signs | $0 | Good | 2-4 hours |
+| Hire ASL tutor | $50-100/hr | Professional | 2-3 hours |
+| License existing videos | $100-500 | Professional | Immediate |
+
+**Recommendation**: Start with self-recorded videos for Phase 0 validation. Upgrade to professional videos if app validates learning approach.
 
 ---
 
@@ -630,7 +665,7 @@ TOTAL: 14 weeks to full MVP
 ```
 MUST HAVE (Launch blockers):
 □ Fingerspelling A-Z works >90% accuracy
-□ 15 motion signs work >85% accuracy
+□ 15 motion signs work >95% accuracy
 □ User practices daily for 2+ weeks
 □ Family members understand user's signs
 
@@ -650,9 +685,9 @@ NICE TO HAVE (Delight):
 
 ```
 □ Expand vocabulary to 100+ signs
-□ Add Unity avatar (if video validated learning)
 □ Add emergency signs (with 99%+ accuracy)
 □ Add family member accounts (learn together)
+□ Evaluate 3D avatar (RealityKit) - only if video approach needs enhancement
 □ Consider LLM integration (with proper ASL fine-tuning)
 ```
 
@@ -676,20 +711,30 @@ NICE TO HAVE (Delight):
 - Hallucination guardrails
 - Latency optimization (<500ms)
 
-### 3D Avatar (v2.0+)
-**Prerequisite**: Video-based MVP validates learning approach
+### 3D Avatar (v2.0+ - Only If Needed)
+**Prerequisite**: Video-based MVP validates learning approach AND users request dynamic content
+**Technology**: RealityKit (Apple native) - NOT Unity
 **Requirements**:
+- Prove video approach works first
+- User research shows demand for dynamic avatar
 - Motion capture session with native ASL signer
-- Unity integration stability proven
-- User preference research (3D vs video)
+- Performance validation on target devices
+
+**Decision Criteria for Adding 3D**:
+- Users explicitly request it
+- Conversation mode needs dynamic responses
+- Video library becomes unmanageable (500+ signs)
 
 ---
 
 ## Next Steps
 
-1. **Immediate**: Create Phase 0 validation project
-2. **This week**: Test Unity-iOS integration
-3. **This week**: Test Vision Framework in your home lighting
-4. **Decision point**: Unity vs RealityKit vs Video-only
+1. **Immediate**: Implement biometric consent flow (SignVerse-rdn)
+2. **Phase 0**: Test Vision Framework in your home lighting
+3. **Phase 0**: Build camera + video split-screen prototype
+4. **Phase 0**: Record 5 sample sign videos
+
+**Architecture Confirmed**: Pure iOS (SwiftUI + AVFoundation + Vision Framework)
+**No Unity. No RealityKit for MVP.**
 
 **Ready to start Phase 0 validation?**

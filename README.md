@@ -29,90 +29,87 @@ SignVerse helps post-laryngectomy individuals learn ASL through simulated immers
 
 ## Tech Stack
 
-### iOS Native (Swift)
-- **SwiftUI**: Modern declarative UI
-- **Apple Vision Framework**: Hand pose tracking (21 keypoints)
-- **CoreML**: On-device ML inference
-- **AVFoundation**: Camera capture
+### MVP: Pure iOS (No 3D Frameworks)
 
-### Unity Integration (C#)
-- **3D Avatar Rendering**: Real-time sign animation
-- **Animation Blending**: Smooth transitions between signs
-- **Non-Manual Signals**: Facial expressions, head tilts
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| UI | SwiftUI | Modern declarative interface |
+| Hand Tracking | Vision Framework | 21-keypoint hand pose detection |
+| ML Inference | CoreML | On-device gesture recognition |
+| Camera | AVFoundation | Live camera feed |
+| Video Playback | AVPlayer | Sign demonstration videos |
+| Storage | UserDefaults + FileManager | Local progress tracking |
 
-### Backend & Data
-- **Supabase**: User data, progress tracking
-- **Data Collection**: Skeletal JSON (not video) for privacy
-- **Format**: MediaPipe 21-joint hand landmarks
+> **Note**: Unity and RealityKit are intentionally excluded from MVP. Video-only approach validates learning effectiveness before investing in 3D complexity.
+
+### Backend (Optional for MVP)
+- **Supabase**: Anonymized analytics only (if user consents)
+- **Local-first**: All progress stored on-device
 
 ### AI/ML Models
 
-#### Recognition (Input - Your Signing)
+#### Recognition (Your Signing → App)
 - **Primary**: Apple Vision Framework Hand Pose
-- **Backup**: MediaPipe Hands (cross-platform)
 - **Training Data Sources**:
   - **ASL Alphabet (NIH)**: 26K images for fingerspelling
   - **WLASL**: 21K videos, 2K common words
-  - **How2Sign**: 80+ hours continuous ASL
-  - **ASL 1000**: High-fidelity human-verified annotations
 
-#### Generation (Output - Avatar Signing)
-- **Architecture Options**:
-  - **SignLLM**: Text → 3D poses (BLEU 20.09, multilingual)
-  - **GenASL (AWS)**: Claude 3.5 → Stable Diffusion avatars
-  - **Apple AI Sign Generation**: Bi-directional with non-manual markers
-  - **SignDiff**: Photo-realistic diffusion model
-- **MVP Approach**: Pre-animated Unity clips (faster, simpler)
-- **Future**: Real-time generation with LLM integration
+#### Demonstration (App → You)
+- **MVP Approach**: Pre-recorded videos of native ASL signer
+- **Benefits**: Authentic signing, natural facial expressions, no uncanny valley
+- **Future (v2.0+)**: RealityKit avatar if video approach needs enhancement
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────┐
-│              iOS App (SwiftUI)                   │
-├─────────────────────────────────────────────────┤
-│                                                  │
-│  ┌──────────────┐         ┌──────────────┐     │
-│  │   Camera     │────────>│  Vision      │     │
-│  │   Capture    │         │  Framework   │     │
-│  └──────────────┘         └──────┬───────┘     │
-│                                   │              │
-│                          21 Hand Keypoints       │
-│                                   │              │
-│                                   v              │
-│                          ┌─────────────────┐    │
-│                          │  Gesture        │    │
-│                          │  Recognizer     │    │
-│                          └────────┬────────┘    │
-│                                   │              │
-│                          Recognized Sign         │
-│                                   │              │
-│         ┌─────────────────────────┼──────────┐  │
-│         │                         v          │  │
-│  ┌──────▼──────┐         ┌────────────────┐ │  │
-│  │  Unity View │<────────│  LLM/Logic     │ │  │
-│  │  (Avatar)   │         │  (Conversation)│ │  │
-│  └─────────────┘         └────────┬───────┘ │  │
-│                                   │          │  │
-│                                   v          │  │
-│                          ┌─────────────────┐ │  │
-│                          │  Data Logger    │ │  │
-│                          │  (Supabase)     │ │  │
-│                          └─────────────────┘ │  │
-│                                               │  │
-└───────────────────────────────────────────────┘  │
+┌─────────────────────────────────────────────────────────────┐
+│                    iOS App (SwiftUI)                         │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │                 SPLIT-SCREEN VIEW                    │   │
+│  ├─────────────────────────────────────────────────────┤   │
+│  │  ┌─────────────────────────────────────────────┐   │   │
+│  │  │           VIDEO PLAYER (Top)                 │   │   │
+│  │  │   Pre-recorded sign demonstration            │   │   │
+│  │  │   [Slow-mo] [Loop] [Next Sign]              │   │   │
+│  │  └─────────────────────────────────────────────┘   │   │
+│  │  ┌─────────────────────────────────────────────┐   │   │
+│  │  │           CAMERA VIEW (Bottom)              │   │   │
+│  │  │   Live feed + skeleton overlay              │   │   │
+│  │  │   Confidence: 87% → WATER ✓                │   │   │
+│  │  └─────────────────────────────────────────────┘   │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                              │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│  │   Camera     │───>│   Vision     │───>│   Gesture    │  │
+│  │   Capture    │    │   Framework  │    │   Recognizer │  │
+│  │ (AVFoundation)    │ (21 keypoints)    │   (CoreML)   │  │
+│  └──────────────┘    └──────────────┘    └──────┬───────┘  │
+│                                                  │          │
+│                                         Recognized Sign     │
+│                                                  │          │
+│  ┌───────────────────────────────────────────────▼───────┐ │
+│  │                  LEARNING ENGINE                       │ │
+│  │  • Spaced repetition scheduling                        │ │
+│  │  • Progress tracking (local)                           │ │
+│  │  • Conversation flow (pre-scripted)                    │ │
+│  └───────────────────────────────────────────────────────┘ │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ## Project Structure
 
 ```
 SignVerse/
-├── iOS/                          # Native iOS app
+├── iOS/                          # Native iOS app (MVP)
 │   ├── SignVerse/                # Main app target
 │   │   ├── App/                  # App entry point
 │   │   ├── Views/                # SwiftUI views
-│   │   │   ├── MirrorView.swift      # Main interaction screen
-│   │   │   ├── ScenarioView.swift    # Scenario selection
+│   │   │   ├── ConsentView.swift     # Biometric consent (REQUIRED)
+│   │   │   ├── PracticeView.swift    # Main practice screen
+│   │   │   ├── VideoPlayerView.swift # Sign demonstration
 │   │   │   └── ProgressView.swift    # Progress dashboard
 │   │   ├── Vision/               # Hand tracking
 │   │   │   ├── HandPoseDetector.swift
@@ -121,58 +118,44 @@ SignVerse/
 │   │   ├── Models/               # Data models
 │   │   │   ├── Sign.swift
 │   │   │   ├── Scenario.swift
-│   │   │   └── UserProgress.swift
-│   │   ├── Unity/                # Unity bridge
-│   │   │   └── UnityBridge.swift
-│   │   └── Services/             # Backend integration
-│   │       ├── SupabaseClient.swift
-│   │       └── DataLogger.swift
+│   │   │   └── LearningProgress.swift
+│   │   ├── Learning/             # Learning engine
+│   │   │   ├── SpacedRepetition.swift
+│   │   │   └── ConversationFlow.swift
+│   │   └── Resources/            # Video content
+│   │       ├── Alphabet/         # A-Z reference videos
+│   │       └── Signs/            # Motion sign videos
 │   └── SignVerseTests/           # Unit tests
-├── Unity/                        # Unity project
-│   ├── Assets/
-│   │   ├── Avatars/              # 3D avatar models
-│   │   ├── Animations/           # Sign animations
-│   │   │   ├── Alphabet/         # A-Z fingerspelling
-│   │   │   ├── Common/           # Common words/phrases
-│   │   │   └── Scenarios/        # Scenario-specific signs
-│   │   ├── Scripts/              # C# scripts
-│   │   │   ├── AvatarController.cs
-│   │   │   ├── AnimationBlender.cs
-│   │   │   └── iOSBridge.cs
-│   │   └── Scenes/
-│   │       └── MainScene.unity
-│   └── Packages/                 # Unity packages
+├── Content/                      # Sign demonstration videos
+│   ├── Alphabet/                 # A-Z fingerspelling videos
+│   ├── Signs/                    # Motion sign videos
+│   └── Conversations/            # Scenario conversation videos
 ├── Data/                         # ML datasets & models
 │   ├── Training/
-│   │   ├── ASL_Alphabet/         # NIH dataset (26K images)
-│   │   ├── WLASL/                # Word-level dataset
-│   │   └── Custom/               # User-collected data
-│   ├── Models/
-│   │   ├── gesture_recognizer.mlmodel
-│   │   └── sign_classifier.mlmodel
-│   └── Annotations/
-│       └── scenario_signs.json    # Mapping scenarios to signs
+│   │   ├── ASL_Alphabet/         # NIH dataset (reference)
+│   │   └── Custom/               # User-collected data (future)
+│   └── Models/
+│       └── gesture_recognizer.mlmodel
 ├── Research/                     # Documentation
-│   ├── Datasets.md               # ASL dataset research
-│   ├── Models.md                 # Pre-trained model options
-│   ├── Architecture.md           # Technical architecture
-│   └── MVP_Plan.md               # MVP development plan
+│   ├── MVP_Plan_v2.md            # Current MVP plan
+│   └── Risk_Analysis.md          # Security & privacy analysis
 ├── Scripts/                      # Utility scripts
-│   ├── download_datasets.sh      # Download ASL datasets
-│   ├── process_landmarks.py      # Convert videos to keypoints
-│   └── train_recognizer.py       # Fine-tune models
+│   └── process_landmarks.py      # Convert videos to keypoints
 └── .beads/                       # Project tracking
 ```
 
-## Development Phases (Revised v2.0)
+> **Note**: No Unity directory. MVP is pure iOS with video content.
 
-> **Key Change**: Phases reordered to validate core technology BEFORE building features. Each phase has Go/No-Go criteria. See [Research/MVP_Plan_v2.md](Research/MVP_Plan_v2.md) for complete details.
+## Development Phases (Revised v2.1)
+
+> **Architecture**: Pure iOS with video-only demonstrations. No Unity, no RealityKit for MVP. See [Research/MVP_Plan_v2.md](Research/MVP_Plan_v2.md) for complete details.
 
 ### Phase 0: Technical Validation (Week 1)
 **Goal**: Prove core technology works before building features
-- [ ] Test Unity-iOS integration stability (or decide on RealityKit fallback)
-- [ ] Test Vision Framework hand tracking in home lighting conditions
-- [ ] Validate recognition accuracy on static poses
+- [ ] Test Vision Framework hand tracking in home lighting
+- [ ] Build camera + video split-screen prototype
+- [ ] Record 5 sample sign videos
+- [ ] Validate video playback quality
 
 **Go/No-Go**: Must pass all validation criteria before Phase 1
 
@@ -190,7 +173,7 @@ SignVerse/
 - [ ] Motion recognition for selected signs
 - [ ] Pre-recorded reference videos (native signer)
 - [ ] Occlusion handling strategies for two-handed signs
-- [ ] >85% accuracy on motion signs
+- [ ] >95% accuracy on motion signs
 
 ### Phase 3: Learning Loop (Weeks 7-9)
 **Goal**: Gamified practice with progress tracking
@@ -213,9 +196,8 @@ SignVerse/
 ### Prerequisites
 - macOS 14.0+ (for development)
 - Xcode 15.0+
-- Unity 2022.3 LTS
-- iOS 17.0+ device (iPhone 12 or later recommended)
-- Supabase account
+- iOS 17.0+ device (iPhone 12 or later recommended for hand tracking)
+- iPhone camera for recording sign videos (optional: hire ASL tutor)
 
 ### Installation
 ```bash
@@ -223,19 +205,15 @@ SignVerse/
 git clone https://github.com/[username]/SignVerse.git
 cd SignVerse
 
-# Install iOS dependencies
+# Open iOS project in Xcode
 cd iOS
-# Open SignVerse.xcodeproj in Xcode
-
-# Setup Unity
-cd ../Unity
-# Open in Unity Hub
+open SignVerse.xcodeproj
 ```
 
 ### Configuration
-1. Create `.env` file for Supabase credentials
-2. Configure Unity iOS build settings
-3. Import ASL animation assets
+1. Set your Apple Developer Team in Xcode signing settings
+2. Connect iOS device and build to device (hand tracking requires physical device)
+3. Grant camera permissions when prompted
 
 ## Data Collection Strategy
 
