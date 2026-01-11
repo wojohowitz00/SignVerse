@@ -1,0 +1,110 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Xcode
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+*.xcuserstate
+*.xcworkspace
+!default.xcworkspace
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Package.resolved
+
+# Unity
+Unity/[Ll]ibrary/
+Unity/[Tt]emp/
+Unity/[Oo]bj/
+Unity/[Bb]uild/
+Unity/[Bb]uilds/
+Unity/[Ll]ogs/
+Unity/UserSettings/
+
+# Unity specific
+*.pidb
+*.suo
+*.sln
+*.csproj
+*.userprefs
+*.unityproj
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity Asset Store
+Unity/AssetStoreTools/
+
+# ML Models & Data (large files)
+Data/Training/**/*.mp4
+Data/Training/**/*.avi
+Data/Training/**/*.mov
+*.mlmodel.zip
+
+# Keep structure but ignore large datasets
+Data/Training/ASL_Alphabet/**/*.jpg
+!Data/Training/ASL_Alphabet/README.md
+Data/Training/WLASL/**/*.mp4
+!Data/Training/WLASL/README.md
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python (for scripts)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Test coverage
+coverage/
+*.coverage
+.coverage.*
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
