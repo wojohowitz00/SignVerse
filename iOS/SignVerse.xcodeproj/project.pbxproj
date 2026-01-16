@@ -10,14 +10,22 @@
 		001A2C02000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001A2C03000001; };
 		001A2C04000001 /* BiometricConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001A2C05000001; };
 		001A2C06000001 /* ConsentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001A2C07000001; };
+		001A2C08000001 /* HandPoseDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001A2C09000001; };
+		001A2C0A000001 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001A2C0B000001; };
+		001A2C0C000001 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001A2C0D000001; };
+		001A2C0E000001 /* PracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001A2C0F000001; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXFileReference section */
 		001A2C00000002 /* SignVerse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignVerse.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		001A2C01000001 /* SignVerseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/SignVerseApp.swift; sourceTree = "<group>"; };
-		001A2C03000001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/ContentView.swift; sourceTree = "<group>"; };
-		001A2C05000001 /* BiometricConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/BiometricConsentView.swift; sourceTree = "<group>"; };
-		001A2C07000001 /* ConsentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/ConsentManager.swift; sourceTree = "<group>"; };
+		001A2C01000001 /* SignVerseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignVerseApp.swift; sourceTree = "<group>"; };
+		001A2C03000001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		001A2C05000001 /* BiometricConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricConsentView.swift; sourceTree = "<group>"; };
+		001A2C07000001 /* ConsentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentManager.swift; sourceTree = "<group>"; };
+		001A2C09000001 /* HandPoseDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandPoseDetector.swift; sourceTree = "<group>"; };
+		001A2C0B000001 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		001A2C0D000001 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		001A2C0F000001 /* PracticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeView.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +45,7 @@
 				001A2C00000005 /* App */,
 				001A2C00000006 /* Views */,
 				001A2C00000007 /* Models */,
+				001A2C00000030 /* Vision */,
 			);
 			path = SignVerse;
 			sourceTree = "<group>";
@@ -54,6 +63,9 @@
 			isa = PBXGroup;
 			children = (
 				001A2C05000001 /* BiometricConsentView.swift */,
+				001A2C0B000001 /* CameraView.swift */,
+				001A2C0D000001 /* VideoPlayerView.swift */,
+				001A2C0F000001 /* PracticeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -64,6 +76,14 @@
 				001A2C07000001 /* ConsentManager.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		001A2C00000030 /* Vision */ = {
+			isa = PBXGroup;
+			children = (
+				001A2C09000001 /* HandPoseDetector.swift */,
+			);
+			path = Vision;
 			sourceTree = "<group>";
 		};
 		001A2C00000008 /* Products */ = {
@@ -142,6 +162,10 @@
 				001A2C02000001 /* ContentView.swift in Sources */,
 				001A2C04000001 /* BiometricConsentView.swift in Sources */,
 				001A2C06000001 /* ConsentManager.swift in Sources */,
+				001A2C08000001 /* HandPoseDetector.swift in Sources */,
+				001A2C0A000001 /* CameraView.swift in Sources */,
+				001A2C0C000001 /* VideoPlayerView.swift in Sources */,
+				001A2C0E000001 /* PracticeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +299,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "SignVerse needs camera access to track your hand movements and help you learn sign language.";
 				INFOPLIST_KEY_UIApplicationSceneManifestType = UIApplicationSupportsMultipleScenes;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -304,6 +329,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "SignVerse needs camera access to track your hand movements and help you learn sign language.";
 				INFOPLIST_KEY_UIApplicationSceneManifestType = UIApplicationSupportsMultipleScenes;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
