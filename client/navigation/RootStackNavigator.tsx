@@ -1,12 +1,18 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainTabNavigator from "@/navigation/MainTabNavigator";
-import ModalScreen from "@/screens/ModalScreen";
+import ScenarioDetailScreen from "@/screens/ScenarioDetailScreen";
+import ConversationScreen from "@/screens/ConversationScreen";
+import SignDetailScreen from "@/screens/SignDetailScreen";
+import GrammarDetailScreen from "@/screens/GrammarDetailScreen";
 import { useScreenOptions } from "@/hooks/useScreenOptions";
 
 export type RootStackParamList = {
   Main: undefined;
-  Modal: undefined;
+  ScenarioDetail: { scenarioId: string };
+  Conversation: { scenarioId: string; conversationId: string };
+  SignDetail: { signId: string };
+  GrammarDetail: { lessonId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -22,11 +28,31 @@ export default function RootStackNavigator() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Modal"
-        component={ModalScreen}
+        name="ScenarioDetail"
+        component={ScenarioDetailScreen}
         options={{
-          presentation: "modal",
-          headerTitle: "Modal",
+          headerTitle: "Scenario",
+        }}
+      />
+      <Stack.Screen
+        name="Conversation"
+        component={ConversationScreen}
+        options={{
+          headerTitle: "Practice",
+        }}
+      />
+      <Stack.Screen
+        name="SignDetail"
+        component={SignDetailScreen}
+        options={{
+          headerTitle: "Sign Details",
+        }}
+      />
+      <Stack.Screen
+        name="GrammarDetail"
+        component={GrammarDetailScreen}
+        options={{
+          headerTitle: "Lesson",
         }}
       />
     </Stack.Navigator>
