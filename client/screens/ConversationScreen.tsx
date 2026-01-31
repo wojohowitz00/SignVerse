@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList, Pressable } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, FlatList, Pressable, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useRoute, RouteProp } from "@react-navigation/native";
@@ -13,7 +13,25 @@ import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius, Shadows } from "@/constants/theme";
 import { scenarios } from "@/data/scenarios";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
-import { ConversationMessage } from "@/types";
+import { PartnerType } from "@/types";
+import { getAvatarForPartner } from "@/constants/avatars";
+
+const getPartnerTypeForScenario = (scenarioId: string): PartnerType => {
+  switch (scenarioId) {
+    case "home":
+      return "family";
+    case "work":
+      return "colleague";
+    case "errands":
+      return "service";
+    case "doctor":
+      return "doctor";
+    case "social":
+      return "friend";
+    default:
+      return "stranger";
+  }
+};
 
 type RouteType = RouteProp<RootStackParamList, "Conversation">;
 
@@ -30,6 +48,9 @@ export default function ConversationScreen() {
   const conversation = scenario?.conversations.find(
     (c) => c.id === route.params.conversationId
   );
+
+  const partnerType = getPartnerTypeForScenario(route.params.scenarioId);
+  const avatarSource = getAvatarForPartner(partnerType);
 
   if (!conversation) {
     return (
@@ -71,12 +92,19 @@ export default function ConversationScreen() {
             { backgroundColor: theme.backgroundSecondary },
           ]}
         >
-          <View style={[styles.avatar, { backgroundColor: theme.primary + "20" }]}>
-            <Feather name="user" size={60} color={theme.primary} />
+          <View style={styles.avatarImageWrapper}>
+            <Image source={avatarSource} style={styles.avatarImage} />
           </View>
           <View style={styles.avatarOverlay}>
-            <ThemedText type="small" style={{ color: theme.textSecondary }}>
-              {currentMessage?.role === "partner" ? "Partner signing" : "Your turn"}
+            <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
+              {partnerType === "family" ? "Family Member" :
+               partnerType === "friend" ? "Friend" :
+               partnerType === "colleague" ? "Colleague" :
+               partnerType === "doctor" ? "Healthcare Provider" :
+               partnerType === "service" ? "Service Worker" : "Partner"}
+            </ThemedText>
+            <ThemedText type="small" style={{ color: theme.textSecondary, marginTop: 4 }}>
+              {currentMessage?.role === "partner" ? "Partner is signing" : "Your turn to sign"}
             </ThemedText>
           </View>
         </View>
@@ -107,6 +135,7 @@ export default function ConversationScreen() {
             <ConversationBubble
               message={item}
               isActive={index === currentIndex}
+              partnerType={partnerType}
             />
           )}
           contentContainerStyle={styles.messageList}
@@ -180,13 +209,16 @@ const styles = StyleSheet.create({
     padding: Spacing.xl,
     alignItems: "center",
   },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    alignItems: "center",
-    justifyContent: "center",
+  avatarImageWrapper: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    overflow: "hidden",
     marginBottom: Spacing.md,
+  },
+  avatarImage: {
+    width: 100,
+    height: 100,
   },
   avatarOverlay: {
     alignItems: "center",

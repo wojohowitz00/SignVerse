@@ -1,23 +1,27 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 import { ThemedText } from "@/components/ThemedText";
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius } from "@/constants/theme";
-import { ConversationMessage } from "@/types";
+import { ConversationMessage, PartnerType } from "@/types";
+import { getAvatarForPartner } from "@/constants/avatars";
 
 interface ConversationBubbleProps {
   message: ConversationMessage;
   isActive?: boolean;
+  partnerType?: PartnerType;
 }
 
 export function ConversationBubble({
   message,
   isActive = false,
+  partnerType = "stranger",
 }: ConversationBubbleProps) {
   const { theme } = useTheme();
   const isPartner = message.role === "partner";
+  const avatarSource = getAvatarForPartner(partnerType);
 
   return (
     <View
@@ -27,10 +31,8 @@ export function ConversationBubble({
       ]}
     >
       {isPartner ? (
-        <View
-          style={[styles.avatar, { backgroundColor: theme.primary + "20" }]}
-        >
-          <Feather name="user" size={20} color={theme.primary} />
+        <View style={styles.avatarWrapper}>
+          <Image source={avatarSource} style={styles.avatarImage} />
         </View>
       ) : null}
       <View
@@ -70,7 +72,7 @@ export function ConversationBubble({
       </View>
       {!isPartner ? (
         <View
-          style={[styles.avatar, { backgroundColor: theme.accent + "20" }]}
+          style={[styles.userAvatar, { backgroundColor: theme.accent + "20" }]}
         >
           <Feather name="user" size={20} color={theme.accent} />
         </View>
@@ -94,7 +96,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     paddingLeft: Spacing["3xl"],
   },
-  avatar: {
+  avatarWrapper: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    overflow: "hidden",
+  },
+  avatarImage: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+  },
+  userAvatar: {
     width: 32,
     height: 32,
     borderRadius: 16,
