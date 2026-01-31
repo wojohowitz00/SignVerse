@@ -92,19 +92,25 @@ export default function ConversationScreen() {
             { backgroundColor: theme.backgroundSecondary },
           ]}
         >
-          <View style={styles.avatarImageWrapper}>
-            <Image source={avatarSource} style={styles.avatarImage} />
+          <View style={styles.avatarRow}>
+            <View style={styles.avatarImageWrapper}>
+              <Image source={avatarSource} style={styles.avatarImage} />
+            </View>
+            <View style={styles.signingArea}>
+              <View style={[styles.roleTag, { backgroundColor: currentMessage?.role === "partner" ? theme.primary + "20" : theme.accent + "20" }]}>
+                <ThemedText type="caption" style={{ color: currentMessage?.role === "partner" ? theme.primary : theme.accent, fontWeight: "600" }}>
+                  {currentMessage?.role === "partner" ? "WATCH & LEARN" : "YOUR TURN"}
+                </ThemedText>
+              </View>
+              <ThemedText type="h4" style={[styles.signInstruction, { color: theme.text }]}>
+                {currentMessage?.signDescription || ""}
+              </ThemedText>
+            </View>
           </View>
-          <View style={styles.avatarOverlay}>
-            <ThemedText type="body" style={{ color: theme.text, fontWeight: "600" }}>
-              {partnerType === "family" ? "Family Member" :
-               partnerType === "friend" ? "Friend" :
-               partnerType === "colleague" ? "Colleague" :
-               partnerType === "doctor" ? "Healthcare Provider" :
-               partnerType === "service" ? "Service Worker" : "Partner"}
-            </ThemedText>
-            <ThemedText type="small" style={{ color: theme.textSecondary, marginTop: 4 }}>
-              {currentMessage?.role === "partner" ? "Partner is signing" : "Your turn to sign"}
+          <View style={[styles.englishRow, { borderTopColor: theme.backgroundDefault }]}>
+            <Feather name="message-circle" size={14} color={theme.textSecondary} />
+            <ThemedText type="body" style={{ color: theme.textSecondary, flex: 1 }}>
+              "{currentMessage?.englishText || ""}"
             </ThemedText>
           </View>
         </View>
@@ -206,22 +212,44 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     borderRadius: BorderRadius.lg,
-    padding: Spacing.xl,
-    alignItems: "center",
+    padding: Spacing.lg,
+  },
+  avatarRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: Spacing.md,
   },
   avatarImageWrapper: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     overflow: "hidden",
-    marginBottom: Spacing.md,
   },
   avatarImage: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
   },
-  avatarOverlay: {
-    alignItems: "center",
+  signingArea: {
+    flex: 1,
+    justifyContent: "flex-start",
+  },
+  roleTag: {
+    alignSelf: "flex-start",
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 4,
+    borderRadius: BorderRadius.xs,
+    marginBottom: Spacing.sm,
+  },
+  signInstruction: {
+    lineHeight: 26,
+  },
+  englishRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: Spacing.sm,
+    marginTop: Spacing.md,
+    paddingTop: Spacing.md,
+    borderTopWidth: 1,
   },
   conversationSection: {
     flex: 1,
