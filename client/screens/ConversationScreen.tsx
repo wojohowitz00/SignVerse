@@ -17,7 +17,7 @@ import { RootStackParamList } from "@/navigation/RootStackNavigator";
 import { PartnerType, SigningMediaType } from "@/types";
 import { getAvatarForPartner } from "@/constants/avatars";
 
-import handWaveAnimation from "@/../../assets/animations/hand-wave.json";
+import handWaveAnimation from "../../assets/animations/hand-wave.json";
 
 const getPartnerTypeForScenario = (scenarioId: string): PartnerType => {
   switch (scenarioId) {

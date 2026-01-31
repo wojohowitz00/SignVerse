@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Image, Animated, Easing } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
-import { useTheme } from "@/constants/theme";
+import { useTheme } from "@/hooks/useTheme";
 import { ThemedText } from "./ThemedText";
 import { Spacing, BorderRadius } from "@/constants/theme";
 import type { SigningMediaType } from "@/types";
@@ -25,7 +25,7 @@ export function SigningDemoPlayer({
   isPartnerTurn,
   autoPlay = true,
 }: SigningDemoPlayerProps) {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const lottieRef = useRef<LottieView>(null);
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
