@@ -105,7 +105,7 @@ export default function ConversationScreen() {
             />
             <View style={styles.signingArea}>
               <View style={[styles.roleTag, { backgroundColor: currentMessage?.role === "partner" ? theme.primary + "20" : theme.accent + "20" }]}>
-                <ThemedText type="caption" style={{ color: currentMessage?.role === "partner" ? theme.primary : theme.accent, fontWeight: "600" }}>
+                <ThemedText type="small" style={{ color: currentMessage?.role === "partner" ? theme.primary : theme.accent, fontWeight: "600" }}>
                   {currentMessage?.role === "partner" ? "WATCH & LEARN" : "YOUR TURN"}
                 </ThemedText>
               </View>
@@ -125,7 +125,7 @@ export default function ConversationScreen() {
 
       <View style={styles.conversationSection}>
         <View style={styles.progressRow}>
-          <ThemedText type="caption" style={{ color: theme.textSecondary }}>
+          <ThemedText type="small" style={{ color: theme.textSecondary }}>
             Exchange {currentIndex + 1} of {conversation.messages.length}
           </ThemedText>
           <View style={styles.progressBar}>
@@ -198,7 +198,7 @@ export default function ConversationScreen() {
 
         <View style={styles.hintRow}>
           <Feather name="info" size={14} color={theme.textSecondary} />
-          <ThemedText type="caption" style={{ color: theme.textSecondary }}>
+          <ThemedText type="small" style={{ color: theme.textSecondary }}>
             {currentMessage?.role === "partner"
               ? "Watch the sign description above, then tap Next"
               : "Practice the sign shown, then tap 'I Signed It'"}

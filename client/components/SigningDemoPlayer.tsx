@@ -63,7 +63,7 @@ export function SigningDemoPlayer({
           <Feather name="edit-3" size={32} color={theme.primary} />
         </View>
       </Animated.View>
-      <ThemedText type="caption" style={[styles.placeholderText, { color: theme.textSecondary }]}>
+      <ThemedText type="small" style={[styles.placeholderText, { color: theme.textSecondary }]}>
         Sign demonstration
       </ThemedText>
     </View>

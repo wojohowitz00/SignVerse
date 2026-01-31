@@ -5,10 +5,24 @@ SignSpeak is an immersive ASL (American Sign Language) learning mobile app desig
 
 ## Key Features
 - **Practice Scenarios**: 5 real-world situations (Home, Errands, Doctor, Social, Work) with 94 conversations containing 500 real-world sentences
+- **Signing Demonstrations**: Animated avatar area using Lottie animations (with video support infrastructure for future ASL videos)
 - **Vocabulary Builder**: 150 common ASL signs organized by category (Common, Home, Medical, Work, Errands, Social) and difficulty
 - **Grammar Lessons**: 5 comprehensive lessons on ASL structure, facial grammar, directional verbs, spatial referencing, and negation
 - **Progress Tracking**: Track signs learned, conversations completed, practice time, and streaks
 - **Offline-First**: All learning content stored locally using AsyncStorage
+
+## Signing Demonstration System
+The app includes a SigningDemoPlayer component that supports:
+- **Lottie Animations**: JSON-based animations created in After Effects and exported via Bodymovin
+- **Video Support**: Infrastructure ready for real ASL signing videos (WLASL, How2Sign datasets)
+- **Placeholder Mode**: Animated hand icons when no animation/video is available
+
+### Creating New Lottie Animations
+1. Design hand/arm animations in Adobe After Effects
+2. Export using the Bodymovin plugin to JSON format
+3. Or use LottieFiles online editor for simpler animations
+4. Place JSON files in `assets/animations/` directory
+5. Import and use in SigningDemoPlayer component
 
 ## Architecture
 
