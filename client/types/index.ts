@@ -30,7 +30,10 @@ export interface ConversationMessage {
   signDescription: string;
   englishText: string;
   videoUrl?: string;
+  animationId?: string;
 }
+
+export type SigningMediaType = "video" | "lottie" | "placeholder";
 
 export interface Sign {
   id: string;
