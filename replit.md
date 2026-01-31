@@ -4,8 +4,8 @@
 SignSpeak is an immersive ASL (American Sign Language) learning mobile app designed for adults who want to learn ASL through practical, real-world scenarios. The app focuses on offline-first functionality and uses conversation-based learning with AI-powered virtual partners.
 
 ## Key Features
-- **Practice Scenarios**: 5 real-world situations (Home, Errands, Doctor, Social, Work) with multiple conversations each
-- **Vocabulary Builder**: 50+ common ASL signs organized by category and difficulty
+- **Practice Scenarios**: 5 real-world situations (Home, Errands, Doctor, Social, Work) with 94 conversations containing 500 real-world sentences
+- **Vocabulary Builder**: 150 common ASL signs organized by category (Common, Home, Medical, Work, Errands, Social) and difficulty
 - **Grammar Lessons**: 5 comprehensive lessons on ASL structure, facial grammar, directional verbs, spatial referencing, and negation
 - **Progress Tracking**: Track signs learned, conversations completed, practice time, and streaks
 - **Offline-First**: All learning content stored locally using AsyncStorage

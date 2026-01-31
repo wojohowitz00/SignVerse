@@ -76,7 +76,7 @@ export function SignCard({ sign, onPress, onFavoritePress }: SignCardProps) {
         <View
           style={[styles.iconContainer, { backgroundColor: theme.backgroundSecondary }]}
         >
-          <Feather name="hand" size={24} color={theme.primary} />
+          <Feather name="edit-3" size={24} color={theme.primary} />
         </View>
         <View style={styles.textContent}>
           <ThemedText type="body" style={styles.word}>

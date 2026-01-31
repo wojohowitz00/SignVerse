@@ -93,7 +93,7 @@ export default function GrammarDetailScreen() {
                   { backgroundColor: theme.primary + "15" },
                 ]}
               >
-                <Feather name="hand" size={16} color={theme.primary} />
+                <Feather name="edit-3" size={16} color={theme.primary} />
                 <ThemedText
                   type="body"
                   style={[styles.aslText, { color: theme.primary }]}

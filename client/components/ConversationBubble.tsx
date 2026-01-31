@@ -44,7 +44,7 @@ export function ConversationBubble({
       >
         <View style={styles.signRow}>
           <Feather
-            name="hand"
+            name="edit-3"
             size={14}
             color={isPartner ? theme.textSecondary : "rgba(255,255,255,0.7)"}
           />

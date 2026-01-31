@@ -77,7 +77,7 @@ export default function SignDetailScreen() {
         ]}
       >
         <View style={[styles.avatarPlaceholder, { backgroundColor: theme.primary + "20" }]}>
-          <Feather name="hand" size={80} color={theme.primary} />
+          <Feather name="edit-3" size={80} color={theme.primary} />
         </View>
         <View style={styles.demoOverlay}>
           <ThemedText type="small" style={{ color: theme.textSecondary }}>
