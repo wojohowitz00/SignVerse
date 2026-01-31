@@ -9,12 +9,15 @@ import * as Haptics from "expo-haptics";
 import { ConversationBubble } from "@/components/ConversationBubble";
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
+import { SigningDemoPlayer } from "@/components/SigningDemoPlayer";
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius, Shadows } from "@/constants/theme";
 import { scenarios } from "@/data/scenarios";
 import { RootStackParamList } from "@/navigation/RootStackNavigator";
-import { PartnerType } from "@/types";
+import { PartnerType, SigningMediaType } from "@/types";
 import { getAvatarForPartner } from "@/constants/avatars";
+
+import handWaveAnimation from "@/../../assets/animations/hand-wave.json";
 
 const getPartnerTypeForScenario = (scenarioId: string): PartnerType => {
   switch (scenarioId) {
@@ -93,16 +96,20 @@ export default function ConversationScreen() {
           ]}
         >
           <View style={styles.avatarRow}>
-            <View style={styles.avatarImageWrapper}>
-              <Image source={avatarSource} style={styles.avatarImage} />
-            </View>
+            <SigningDemoPlayer
+              mediaType="lottie"
+              animationSource={handWaveAnimation}
+              avatarSource={avatarSource}
+              signDescription={currentMessage?.signDescription || ""}
+              isPartnerTurn={currentMessage?.role === "partner"}
+            />
             <View style={styles.signingArea}>
               <View style={[styles.roleTag, { backgroundColor: currentMessage?.role === "partner" ? theme.primary + "20" : theme.accent + "20" }]}>
                 <ThemedText type="caption" style={{ color: currentMessage?.role === "partner" ? theme.primary : theme.accent, fontWeight: "600" }}>
                   {currentMessage?.role === "partner" ? "WATCH & LEARN" : "YOUR TURN"}
                 </ThemedText>
               </View>
-              <ThemedText type="h4" style={[styles.signInstruction, { color: theme.text }]}>
+              <ThemedText type="body" style={[styles.signInstruction, { color: theme.text }]}>
                 {currentMessage?.signDescription || ""}
               </ThemedText>
             </View>
@@ -218,16 +225,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     gap: Spacing.md,
-  },
-  avatarImageWrapper: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    overflow: "hidden",
-  },
-  avatarImage: {
-    width: 80,
-    height: 80,
   },
   signingArea: {
     flex: 1,
