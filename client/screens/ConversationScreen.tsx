@@ -9,7 +9,10 @@ import * as Haptics from "expo-haptics";
 import { ConversationBubble } from "@/components/ConversationBubble";
 import { ThemedText } from "@/components/ThemedText";
 import { Button } from "@/components/Button";
+import { ASLVideoPlayer } from "@/components/ASLVideoPlayer";
 import { SigningDemoPlayer } from "@/components/SigningDemoPlayer";
+import { useContent } from "@/hooks/useContent";
+import { ContentItem } from "@/lib/content-manager";
 import { useTheme } from "@/hooks/useTheme";
 import { Spacing, BorderRadius, Shadows } from "@/constants/theme";
 import { scenarios } from "@/data/scenarios";
@@ -43,9 +46,13 @@ export default function ConversationScreen() {
   const headerHeight = useHeaderHeight();
   const { theme } = useTheme();
   const route = useRoute<RouteType>();
+  const { manifest, getSource, isCached, downloadItem, downloadProgress } = useContent();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [matchedContent, setMatchedContent] = useState<ContentItem | null>(null);
+  const [videoSource, setVideoSource] = useState<string | null>(null);
+  const [isContentCached, setIsContentCached] = useState(false);
 
   const scenario = scenarios.find((s) => s.id === route.params.scenarioId);
   const conversation = scenario?.conversations.find(
@@ -54,6 +61,35 @@ export default function ConversationScreen() {
 
   const partnerType = getPartnerTypeForScenario(route.params.scenarioId);
   const avatarSource = getAvatarForPartner(partnerType);
+
+  const currentMessage = conversation?.messages[currentIndex];
+
+  // Look up content for current message
+  React.useEffect(() => {
+    const lookupContent = async () => {
+      if (!currentMessage || !manifest) {
+        setMatchedContent(null);
+        return;
+      }
+
+      // Match by exact English text (normalized)
+      const item = manifest.items.find(
+        i => i.englishText.toLowerCase().trim() === currentMessage.englishText.toLowerCase().trim()
+      );
+
+      setMatchedContent(item || null);
+
+      if (item) {
+        const source = await getSource(item);
+        setVideoSource(source);
+        const cached = await isCached(item.id);
+        setIsContentCached(cached);
+      }
+    };
+    lookupContent();
+  }, [currentMessage, manifest, getSource, isCached]);
+
+  const isDownloading = !!(matchedContent && downloadProgress.get(matchedContent.id)?.status === "downloading");
 
   if (!conversation) {
     return (
@@ -64,7 +100,6 @@ export default function ConversationScreen() {
   }
 
   const visibleMessages = conversation.messages.slice(0, currentIndex + 1);
-  const currentMessage = conversation.messages[currentIndex];
   const isComplete = currentIndex >= conversation.messages.length - 1;
 
   const handleNext = () => {
@@ -96,29 +131,67 @@ export default function ConversationScreen() {
           ]}
         >
           <View style={styles.avatarRow}>
-            <SigningDemoPlayer
-              mediaType="lottie"
-              animationSource={handWaveAnimation}
-              avatarSource={avatarSource}
-              signDescription={currentMessage?.signDescription || ""}
-              isPartnerTurn={currentMessage?.role === "partner"}
-            />
-            <View style={styles.signingArea}>
-              <View style={[styles.roleTag, { backgroundColor: currentMessage?.role === "partner" ? theme.primary + "20" : theme.accent + "20" }]}>
-                <ThemedText type="small" style={{ color: currentMessage?.role === "partner" ? theme.primary : theme.accent, fontWeight: "600" }}>
-                  {currentMessage?.role === "partner" ? "WATCH & LEARN" : "YOUR TURN"}
+            <View style={styles.playerWrapper}>
+              {matchedContent ? (
+                <ASLVideoPlayer
+                  source={videoSource || matchedContent.remoteUrl}
+                  height={180}
+                  autoPlay={true}
+                  loop={false}
+                  captions={matchedContent.gloss?.map((g, i) => ({
+                    gloss: g,
+                    startMs: (matchedContent.durationMs / matchedContent.gloss.length) * i,
+                    endMs: (matchedContent.durationMs / matchedContent.gloss.length) * (i + 1),
+                  }))}
+                  englishText={currentMessage?.englishText}
+                />
+              ) : (
+                <SigningDemoPlayer
+                  mediaType="lottie"
+                  animationSource={handWaveAnimation}
+                  avatarSource={avatarSource}
+                  signDescription={currentMessage?.signDescription || ""}
+                  isPartnerTurn={currentMessage?.role === "partner"}
+                />
+              )}
+            </View>
+
+            {!matchedContent && (
+              <View style={styles.signingArea}>
+                <View style={[styles.roleTag, { backgroundColor: currentMessage?.role === "partner" ? theme.primary + "20" : theme.accent + "20" }]}>
+                  <ThemedText type="small" style={{ color: currentMessage?.role === "partner" ? theme.primary : theme.accent, fontWeight: "600" }}>
+                    {currentMessage?.role === "partner" ? "WATCH & LEARN" : "YOUR TURN"}
+                  </ThemedText>
+                </View>
+                <ThemedText type="body" style={[styles.signInstruction, { color: theme.text }]}>
+                  {currentMessage?.signDescription || ""}
                 </ThemedText>
               </View>
-              <ThemedText type="body" style={[styles.signInstruction, { color: theme.text }]}>
-                {currentMessage?.signDescription || ""}
-              </ThemedText>
-            </View>
+            )}
           </View>
+
           <View style={[styles.englishRow, { borderTopColor: theme.backgroundDefault }]}>
             <Feather name="message-circle" size={14} color={theme.textSecondary} />
             <ThemedText type="body" style={{ color: theme.textSecondary, flex: 1 }}>
               "{currentMessage?.englishText || ""}"
             </ThemedText>
+            {matchedContent && !isContentCached && (
+              <Button
+                variant="outline"
+                size="sm"
+                onPress={() => downloadItem(matchedContent)}
+                disabled={isDownloading}
+                style={styles.downloadButton}
+              >
+                {isDownloading ? "Downloading..." : "Save Offline"}
+              </Button>
+            )}
+            {isContentCached && (
+              <View style={styles.cachedBadge}>
+                <Feather name="check-circle" size={14} color={theme.success} />
+                <ThemedText type="small" style={{ color: theme.success, marginLeft: 4 }}>Saved</ThemedText>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -296,5 +369,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: Spacing.xs,
     marginTop: Spacing.md,
+  },
+  playerWrapper: {
+    width: "100%",
+    minHeight: 180,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  downloadButton: {
+    marginLeft: Spacing.sm,
+  },
+  cachedBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: Spacing.sm,
+    backgroundColor: "rgba(0,0,0,0.05)",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: BorderRadius.sm,
   },
 });
