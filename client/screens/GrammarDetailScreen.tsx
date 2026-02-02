@@ -60,7 +60,10 @@ export default function GrammarDetailScreen() {
       case "text":
         return (
           <View
-            style={[styles.contentCard, { backgroundColor: theme.backgroundDefault }]}
+            style={[
+              styles.contentCard,
+              { backgroundColor: theme.backgroundDefault },
+            ]}
           >
             <ThemedText type="body" style={styles.contentText}>
               {content.content}
@@ -78,7 +81,10 @@ export default function GrammarDetailScreen() {
             >
               <View style={styles.exampleHeader}>
                 <Feather name="book-open" size={18} color={theme.primary} />
-                <ThemedText type="small" style={{ color: theme.primary, fontWeight: "600" }}>
+                <ThemedText
+                  type="small"
+                  style={{ color: theme.primary, fontWeight: "600" }}
+                >
                   Example
                 </ThemedText>
               </View>
@@ -180,17 +186,25 @@ export default function GrammarDetailScreen() {
       <View
         style={[
           styles.footer,
-          { paddingBottom: insets.bottom + Spacing.lg, backgroundColor: theme.backgroundDefault },
+          {
+            paddingBottom: insets.bottom + Spacing.lg,
+            backgroundColor: theme.backgroundDefault,
+          },
           Shadows.card,
         ]}
       >
         <View style={styles.navigationRow}>
           <Pressable
-            onPress={() => setCurrentContentIndex((prev) => Math.max(0, prev - 1))}
+            onPress={() =>
+              setCurrentContentIndex((prev) => Math.max(0, prev - 1))
+            }
             disabled={currentContentIndex === 0}
             style={[
               styles.navButton,
-              { backgroundColor: theme.backgroundSecondary, opacity: currentContentIndex === 0 ? 0.5 : 1 },
+              {
+                backgroundColor: theme.backgroundSecondary,
+                opacity: currentContentIndex === 0 ? 0.5 : 1,
+              },
             ]}
           >
             <Feather name="chevron-left" size={24} color={theme.text} />
@@ -211,7 +225,10 @@ export default function GrammarDetailScreen() {
             disabled={isComplete}
             style={[
               styles.navButton,
-              { backgroundColor: theme.backgroundSecondary, opacity: isComplete ? 0.5 : 1 },
+              {
+                backgroundColor: theme.backgroundSecondary,
+                opacity: isComplete ? 0.5 : 1,
+              },
             ]}
           >
             <Feather name="chevron-right" size={24} color={theme.text} />

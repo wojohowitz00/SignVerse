@@ -74,7 +74,10 @@ export function SignCard({ sign, onPress, onFavoritePress }: SignCardProps) {
     >
       <View style={styles.leftContent}>
         <View
-          style={[styles.iconContainer, { backgroundColor: theme.backgroundSecondary }]}
+          style={[
+            styles.iconContainer,
+            { backgroundColor: theme.backgroundSecondary },
+          ]}
         >
           <Feather name="edit-3" size={24} color={theme.primary} />
         </View>
@@ -84,7 +87,10 @@ export function SignCard({ sign, onPress, onFavoritePress }: SignCardProps) {
           </ThemedText>
           <View style={styles.metaRow}>
             <View
-              style={[styles.difficultyBadge, { backgroundColor: difficultyColor + "20" }]}
+              style={[
+                styles.difficultyBadge,
+                { backgroundColor: difficultyColor + "20" },
+              ]}
             >
               <ThemedText
                 type="caption"
@@ -104,7 +110,12 @@ export function SignCard({ sign, onPress, onFavoritePress }: SignCardProps) {
       </View>
       <View style={styles.rightContent}>
         {sign.isLearned ? (
-          <View style={[styles.learnedBadge, { backgroundColor: theme.success + "20" }]}>
+          <View
+            style={[
+              styles.learnedBadge,
+              { backgroundColor: theme.success + "20" },
+            ]}
+          >
             <Feather name="check" size={14} color={theme.success} />
           </View>
         ) : null}

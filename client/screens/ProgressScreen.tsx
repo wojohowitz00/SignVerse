@@ -27,11 +27,16 @@ export default function ProgressScreen() {
 
   if (!hasActivity && !isLoading) {
     return (
-      <View style={[styles.container, { backgroundColor: theme.backgroundRoot }]}>
+      <View
+        style={[styles.container, { backgroundColor: theme.backgroundRoot }]}
+      >
         <View
           style={[
             styles.emptyContainer,
-            { paddingTop: headerHeight + Spacing.xl, paddingBottom: tabBarHeight + Spacing.xl },
+            {
+              paddingTop: headerHeight + Spacing.xl,
+              paddingBottom: tabBarHeight + Spacing.xl,
+            },
           ]}
         >
           <EmptyState
@@ -125,10 +130,7 @@ export default function ProgressScreen() {
                 <ThemedText type="body" style={styles.achievementTitle}>
                   {achievement.title}
                 </ThemedText>
-                <ThemedText
-                  type="small"
-                  style={{ color: theme.textSecondary }}
-                >
+                <ThemedText type="small" style={{ color: theme.textSecondary }}>
                   {achievement.description}
                 </ThemedText>
               </View>

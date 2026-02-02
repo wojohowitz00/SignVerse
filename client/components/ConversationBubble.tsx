@@ -39,7 +39,10 @@ export function ConversationBubble({
         style={[
           styles.bubble,
           isPartner
-            ? [styles.partnerBubble, { backgroundColor: theme.backgroundSecondary }]
+            ? [
+                styles.partnerBubble,
+                { backgroundColor: theme.backgroundSecondary },
+              ]
             : [styles.userBubble, { backgroundColor: theme.primary }],
           isActive && styles.activeBubble,
         ]}
@@ -54,7 +57,11 @@ export function ConversationBubble({
             type="small"
             style={[
               styles.signDescription,
-              { color: isPartner ? theme.textSecondary : "rgba(255,255,255,0.7)" },
+              {
+                color: isPartner
+                  ? theme.textSecondary
+                  : "rgba(255,255,255,0.7)",
+              },
             ]}
           >
             {message.signDescription}

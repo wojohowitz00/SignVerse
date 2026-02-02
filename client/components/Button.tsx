@@ -74,26 +74,34 @@ export function Button({
 
   const getHeight = () => {
     switch (size) {
-      case "sm": return 36;
-      case "lg": return 56;
-      default: return Spacing.buttonHeight;
+      case "sm":
+        return 36;
+      case "lg":
+        return 56;
+      default:
+        return Spacing.buttonHeight;
     }
   };
 
   const getPaddingHorizontal = () => {
     switch (size) {
-      case "sm": return Spacing.md;
-      case "lg": return Spacing.xl;
-      default: return Spacing.lg;
+      case "sm":
+        return Spacing.md;
+      case "lg":
+        return Spacing.xl;
+      default:
+        return Spacing.lg;
     }
-  }
+  };
 
   const getTextType = () => {
     switch (size) {
-      case "sm": return "small";
-      default: return "body";
+      case "sm":
+        return "small";
+      default:
+        return "body";
     }
-  }
+  };
 
   return (
     <AnimatedPressable

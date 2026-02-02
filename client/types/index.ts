@@ -6,20 +6,21 @@ export interface Scenario {
   conversations: Conversation[];
 }
 
-export type PartnerType = 
-  | "family" 
-  | "friend" 
-  | "colleague" 
-  | "doctor" 
+export type PartnerType =
+  | "family"
+  | "friend"
+  | "colleague"
+  | "doctor"
   | "nurse"
-  | "service" 
+  | "service"
   | "stranger";
 
 export interface Conversation {
   id: string;
   title: string;
   description: string;
-  partnerType: PartnerType;
+  // Optional because many screens derive this from the scenario/category.
+  partnerType?: PartnerType;
   partnerName?: string;
   messages: ConversationMessage[];
 }

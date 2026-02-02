@@ -76,7 +76,12 @@ export default function SignDetailScreen() {
           { backgroundColor: theme.backgroundSecondary },
         ]}
       >
-        <View style={[styles.avatarPlaceholder, { backgroundColor: theme.primary + "20" }]}>
+        <View
+          style={[
+            styles.avatarPlaceholder,
+            { backgroundColor: theme.primary + "20" },
+          ]}
+        >
           <Feather name="edit-3" size={80} color={theme.primary} />
         </View>
         <View style={styles.demoOverlay}>
@@ -100,7 +105,10 @@ export default function SignDetailScreen() {
 
         <View style={styles.badges}>
           <View
-            style={[styles.badge, { backgroundColor: getDifficultyColor() + "20" }]}
+            style={[
+              styles.badge,
+              { backgroundColor: getDifficultyColor() + "20" },
+            ]}
           >
             <ThemedText
               type="small"
@@ -110,14 +118,19 @@ export default function SignDetailScreen() {
             </ThemedText>
           </View>
           <View
-            style={[styles.badge, { backgroundColor: theme.backgroundSecondary }]}
+            style={[
+              styles.badge,
+              { backgroundColor: theme.backgroundSecondary },
+            ]}
           >
             <ThemedText type="small" style={{ color: theme.textSecondary }}>
               {sign.category}
             </ThemedText>
           </View>
           {sign.isLearned ? (
-            <View style={[styles.badge, { backgroundColor: theme.success + "20" }]}>
+            <View
+              style={[styles.badge, { backgroundColor: theme.success + "20" }]}
+            >
               <Feather name="check" size={14} color={theme.success} />
               <ThemedText
                 type="small"
@@ -152,19 +165,28 @@ export default function SignDetailScreen() {
         </ThemedText>
         <View style={styles.tipRow}>
           <Feather name="eye" size={16} color={theme.textSecondary} />
-          <ThemedText type="small" style={{ color: theme.textSecondary, flex: 1 }}>
+          <ThemedText
+            type="small"
+            style={{ color: theme.textSecondary, flex: 1 }}
+          >
             Watch the hand shape and movement carefully
           </ThemedText>
         </View>
         <View style={styles.tipRow}>
           <Feather name="repeat" size={16} color={theme.textSecondary} />
-          <ThemedText type="small" style={{ color: theme.textSecondary, flex: 1 }}>
+          <ThemedText
+            type="small"
+            style={{ color: theme.textSecondary, flex: 1 }}
+          >
             Practice in front of a mirror to check your form
           </ThemedText>
         </View>
         <View style={styles.tipRow}>
           <Feather name="smile" size={16} color={theme.textSecondary} />
-          <ThemedText type="small" style={{ color: theme.textSecondary, flex: 1 }}>
+          <ThemedText
+            type="small"
+            style={{ color: theme.textSecondary, flex: 1 }}
+          >
             Remember facial expressions are part of ASL grammar
           </ThemedText>
         </View>

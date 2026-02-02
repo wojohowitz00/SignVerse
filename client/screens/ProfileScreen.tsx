@@ -57,7 +57,11 @@ export default function ProfileScreen() {
         </View>
         <ThemedText type="h3">{profile.displayName}</ThemedText>
         <ThemedText type="small" style={{ color: theme.textSecondary }}>
-          Learning ASL since {new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+          Learning ASL since{" "}
+          {new Date().toLocaleDateString("en-US", {
+            month: "long",
+            year: "numeric",
+          })}
         </ThemedText>
       </View>
 
@@ -110,7 +114,10 @@ export default function ProfileScreen() {
         <View style={styles.settingRow}>
           <View style={styles.settingLeft}>
             <View
-              style={[styles.settingIcon, { backgroundColor: theme.primary + "20" }]}
+              style={[
+                styles.settingIcon,
+                { backgroundColor: theme.primary + "20" },
+              ]}
             >
               <Feather name="user" size={18} color={theme.primary} />
             </View>
@@ -134,7 +141,10 @@ export default function ProfileScreen() {
         <View style={styles.settingRow}>
           <View style={styles.settingLeft}>
             <View
-              style={[styles.settingIcon, { backgroundColor: theme.accent + "20" }]}
+              style={[
+                styles.settingIcon,
+                { backgroundColor: theme.accent + "20" },
+              ]}
             >
               <Feather name="bell" size={18} color={theme.accent} />
             </View>
@@ -144,7 +154,9 @@ export default function ProfileScreen() {
             value={profile.notificationsEnabled}
             onValueChange={handleNotificationToggle}
             trackColor={{ false: theme.border, true: theme.primary + "60" }}
-            thumbColor={profile.notificationsEnabled ? theme.primary : theme.textSecondary}
+            thumbColor={
+              profile.notificationsEnabled ? theme.primary : theme.textSecondary
+            }
           />
         </View>
       </View>
@@ -163,7 +175,10 @@ export default function ProfileScreen() {
         <Pressable style={styles.aboutRow}>
           <View style={styles.settingLeft}>
             <View
-              style={[styles.settingIcon, { backgroundColor: theme.success + "20" }]}
+              style={[
+                styles.settingIcon,
+                { backgroundColor: theme.success + "20" },
+              ]}
             >
               <Feather name="info" size={18} color={theme.success} />
             </View>
@@ -177,7 +192,10 @@ export default function ProfileScreen() {
         <Pressable style={styles.aboutRow}>
           <View style={styles.settingLeft}>
             <View
-              style={[styles.settingIcon, { backgroundColor: theme.warning + "20" }]}
+              style={[
+                styles.settingIcon,
+                { backgroundColor: theme.warning + "20" },
+              ]}
             >
               <Feather name="heart" size={18} color={theme.warning} />
             </View>
@@ -191,7 +209,10 @@ export default function ProfileScreen() {
         <Pressable style={styles.aboutRow}>
           <View style={styles.settingLeft}>
             <View
-              style={[styles.settingIcon, { backgroundColor: theme.error + "20" }]}
+              style={[
+                styles.settingIcon,
+                { backgroundColor: theme.error + "20" },
+              ]}
             >
               <Feather name="help-circle" size={18} color={theme.error} />
             </View>
@@ -202,10 +223,16 @@ export default function ProfileScreen() {
       </View>
 
       <View style={styles.footer}>
-        <ThemedText type="caption" style={{ color: theme.textSecondary, textAlign: "center" }}>
+        <ThemedText
+          type="caption"
+          style={{ color: theme.textSecondary, textAlign: "center" }}
+        >
           SignSpeak v1.0.0
         </ThemedText>
-        <ThemedText type="caption" style={{ color: theme.textSecondary, textAlign: "center" }}>
+        <ThemedText
+          type="caption"
+          style={{ color: theme.textSecondary, textAlign: "center" }}
+        >
           Made with love for the Deaf community
         </ThemedText>
       </View>

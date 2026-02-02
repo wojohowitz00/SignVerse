@@ -11,6 +11,8 @@ export const avatarImages: Record<PartnerType, ImageSourcePropType> = {
   stranger: require("../../assets/avatars/avatar-professional-woman.png"),
 };
 
-export const getAvatarForPartner = (partnerType: PartnerType): ImageSourcePropType => {
+export const getAvatarForPartner = (
+  partnerType: PartnerType,
+): ImageSourcePropType => {
   return avatarImages[partnerType] || avatarImages.stranger;
 };

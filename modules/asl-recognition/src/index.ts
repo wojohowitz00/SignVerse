@@ -3,9 +3,9 @@
  * On-device ASL fingerspelling recognition using iOS Vision + Core ML.
  * Native module loaded via requireNativeModule; types below for 3.1.2.
  */
-import { requireNativeModule } from 'expo-modules-core';
+import { requireNativeModule } from "expo-modules-core";
 
-const ASLRecognitionModule = requireNativeModule('ASLRecognitionModule');
+const ASLRecognitionModule = requireNativeModule("ASLRecognitionModule");
 
 export { ASLRecognitionModule };
 

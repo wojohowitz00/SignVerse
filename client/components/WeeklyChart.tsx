@@ -40,7 +40,9 @@ export function WeeklyChart({ data }: WeeklyChartProps) {
                     styles.bar,
                     {
                       height: `${Math.max(height, 5)}%`,
-                      backgroundColor: isToday ? theme.primary : theme.primary + "60",
+                      backgroundColor: isToday
+                        ? theme.primary
+                        : theme.primary + "60",
                     },
                   ]}
                 />
@@ -63,7 +65,9 @@ export function WeeklyChart({ data }: WeeklyChartProps) {
       </View>
       <View style={styles.legend}>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: theme.primary }]} />
+          <View
+            style={[styles.legendDot, { backgroundColor: theme.primary }]}
+          />
           <ThemedText type="caption" style={{ color: theme.textSecondary }}>
             Minutes practiced
           </ThemedText>

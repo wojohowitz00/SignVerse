@@ -46,18 +46,21 @@ export function useUserProgress() {
     }
   };
 
-  const updateProgress = useCallback(async (updates: Partial<UserProgress>) => {
-    try {
-      const newProgress = { ...progress, ...updates };
-      await AsyncStorage.setItem(
-        STORAGE_KEYS.USER_PROGRESS,
-        JSON.stringify(newProgress)
-      );
-      setProgress(newProgress);
-    } catch (error) {
-      console.error("Error saving progress:", error);
-    }
-  }, [progress]);
+  const updateProgress = useCallback(
+    async (updates: Partial<UserProgress>) => {
+      try {
+        const newProgress = { ...progress, ...updates };
+        await AsyncStorage.setItem(
+          STORAGE_KEYS.USER_PROGRESS,
+          JSON.stringify(newProgress),
+        );
+        setProgress(newProgress);
+      } catch (error) {
+        console.error("Error saving progress:", error);
+      }
+    },
+    [progress],
+  );
 
   const incrementSignsLearned = useCallback(async () => {
     await updateProgress({ signsLearned: progress.signsLearned + 1 });
@@ -69,15 +72,18 @@ export function useUserProgress() {
     });
   }, [progress, updateProgress]);
 
-  const addPracticeTime = useCallback(async (minutes: number) => {
-    const today = new Date().getDay();
-    const newWeekly = [...progress.weeklyPractice];
-    newWeekly[today] += minutes;
-    await updateProgress({
-      practiceMinutes: progress.practiceMinutes + minutes,
-      weeklyPractice: newWeekly,
-    });
-  }, [progress, updateProgress]);
+  const addPracticeTime = useCallback(
+    async (minutes: number) => {
+      const today = new Date().getDay();
+      const newWeekly = [...progress.weeklyPractice];
+      newWeekly[today] += minutes;
+      await updateProgress({
+        practiceMinutes: progress.practiceMinutes + minutes,
+        weeklyPractice: newWeekly,
+      });
+    },
+    [progress, updateProgress],
+  );
 
   return {
     progress,
@@ -110,18 +116,21 @@ export function useUserProfile() {
     }
   };
 
-  const updateProfile = useCallback(async (updates: Partial<UserProfile>) => {
-    try {
-      const newProfile = { ...profile, ...updates };
-      await AsyncStorage.setItem(
-        STORAGE_KEYS.USER_PROFILE,
-        JSON.stringify(newProfile)
-      );
-      setProfile(newProfile);
-    } catch (error) {
-      console.error("Error saving profile:", error);
-    }
-  }, [profile]);
+  const updateProfile = useCallback(
+    async (updates: Partial<UserProfile>) => {
+      try {
+        const newProfile = { ...profile, ...updates };
+        await AsyncStorage.setItem(
+          STORAGE_KEYS.USER_PROFILE,
+          JSON.stringify(newProfile),
+        );
+        setProfile(newProfile);
+      } catch (error) {
+        console.error("Error saving profile:", error);
+      }
+    },
+    [profile],
+  );
 
   return { profile, isLoading, updateProfile };
 }
@@ -147,26 +156,41 @@ export function useVocabulary() {
     }
   };
 
-  const toggleFavorite = useCallback(async (signId: string) => {
-    const updated = vocabulary.map((sign) =>
-      sign.id === signId ? { ...sign, isFavorite: !sign.isFavorite } : sign
-    );
-    await AsyncStorage.setItem(STORAGE_KEYS.VOCABULARY, JSON.stringify(updated));
-    setVocabulary(updated);
-  }, [vocabulary]);
+  const toggleFavorite = useCallback(
+    async (signId: string) => {
+      const updated = vocabulary.map((sign) =>
+        sign.id === signId ? { ...sign, isFavorite: !sign.isFavorite } : sign,
+      );
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.VOCABULARY,
+        JSON.stringify(updated),
+      );
+      setVocabulary(updated);
+    },
+    [vocabulary],
+  );
 
-  const markAsLearned = useCallback(async (signId: string) => {
-    const updated = vocabulary.map((sign) =>
-      sign.id === signId ? { ...sign, isLearned: true } : sign
-    );
-    await AsyncStorage.setItem(STORAGE_KEYS.VOCABULARY, JSON.stringify(updated));
-    setVocabulary(updated);
-  }, [vocabulary]);
+  const markAsLearned = useCallback(
+    async (signId: string) => {
+      const updated = vocabulary.map((sign) =>
+        sign.id === signId ? { ...sign, isLearned: true } : sign,
+      );
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.VOCABULARY,
+        JSON.stringify(updated),
+      );
+      setVocabulary(updated);
+    },
+    [vocabulary],
+  );
 
   const initializeVocabulary = useCallback(async (signs: Sign[]) => {
     const existing = await AsyncStorage.getItem(STORAGE_KEYS.VOCABULARY);
     if (!existing) {
-      await AsyncStorage.setItem(STORAGE_KEYS.VOCABULARY, JSON.stringify(signs));
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.VOCABULARY,
+        JSON.stringify(signs),
+      );
       setVocabulary(signs);
     } else {
       setVocabulary(JSON.parse(existing));
@@ -184,7 +208,9 @@ export function useVocabulary() {
 }
 
 export function useGrammarProgress() {
-  const [lessonProgress, setLessonProgress] = useState<Record<string, number>>({});
+  const [lessonProgress, setLessonProgress] = useState<Record<string, number>>(
+    {},
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -204,11 +230,17 @@ export function useGrammarProgress() {
     }
   };
 
-  const updateLessonProgress = useCallback(async (lessonId: string, progress: number) => {
-    const updated = { ...lessonProgress, [lessonId]: progress };
-    await AsyncStorage.setItem(STORAGE_KEYS.GRAMMAR_PROGRESS, JSON.stringify(updated));
-    setLessonProgress(updated);
-  }, [lessonProgress]);
+  const updateLessonProgress = useCallback(
+    async (lessonId: string, progress: number) => {
+      const updated = { ...lessonProgress, [lessonId]: progress };
+      await AsyncStorage.setItem(
+        STORAGE_KEYS.GRAMMAR_PROGRESS,
+        JSON.stringify(updated),
+      );
+      setLessonProgress(updated);
+    },
+    [lessonProgress],
+  );
 
   return { lessonProgress, isLoading, updateLessonProgress };
 }

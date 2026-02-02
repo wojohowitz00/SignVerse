@@ -45,7 +45,7 @@ export function SigningDemoPlayer({
             easing: Easing.inOut(Easing.ease),
             useNativeDriver: true,
           }),
-        ])
+        ]),
       ).start();
     }
   }, [mediaType]);
@@ -57,20 +57,37 @@ export function SigningDemoPlayer({
   }, [mediaType, autoPlay, animationSource]);
 
   const renderPlaceholder = () => (
-    <View style={[styles.placeholderContainer, { backgroundColor: theme.backgroundSecondary }]}>
-      <Animated.View style={[styles.handIconWrapper, { transform: [{ scale: pulseAnim }] }]}>
-        <View style={[styles.handCircle, { backgroundColor: theme.primary + "20" }]}>
+    <View
+      style={[
+        styles.placeholderContainer,
+        { backgroundColor: theme.backgroundSecondary },
+      ]}
+    >
+      <Animated.View
+        style={[styles.handIconWrapper, { transform: [{ scale: pulseAnim }] }]}
+      >
+        <View
+          style={[styles.handCircle, { backgroundColor: theme.primary + "20" }]}
+        >
           <Feather name="edit-3" size={32} color={theme.primary} />
         </View>
       </Animated.View>
-      <ThemedText type="small" style={[styles.placeholderText, { color: theme.textSecondary }]}>
+      <ThemedText
+        type="small"
+        style={[styles.placeholderText, { color: theme.textSecondary }]}
+      >
         Sign demonstration
       </ThemedText>
     </View>
   );
 
   const renderLottie = () => (
-    <View style={[styles.lottieContainer, { backgroundColor: theme.backgroundSecondary }]}>
+    <View
+      style={[
+        styles.lottieContainer,
+        { backgroundColor: theme.backgroundSecondary },
+      ]}
+    >
       {animationSource ? (
         <LottieView
           ref={lottieRef}

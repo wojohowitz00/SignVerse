@@ -46,17 +46,20 @@ export default function ConversationScreen() {
   const headerHeight = useHeaderHeight();
   const { theme } = useTheme();
   const route = useRoute<RouteType>();
-  const { manifest, getSource, isCached, downloadItem, downloadProgress } = useContent();
+  const { manifest, getSource, isCached, downloadItem, downloadProgress } =
+    useContent();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [matchedContent, setMatchedContent] = useState<ContentItem | null>(null);
+  const [matchedContent, setMatchedContent] = useState<ContentItem | null>(
+    null,
+  );
   const [videoSource, setVideoSource] = useState<string | null>(null);
   const [isContentCached, setIsContentCached] = useState(false);
 
   const scenario = scenarios.find((s) => s.id === route.params.scenarioId);
   const conversation = scenario?.conversations.find(
-    (c) => c.id === route.params.conversationId
+    (c) => c.id === route.params.conversationId,
   );
 
   const partnerType = getPartnerTypeForScenario(route.params.scenarioId);
@@ -74,7 +77,9 @@ export default function ConversationScreen() {
 
       // Match by exact English text (normalized)
       const item = manifest.items.find(
-        i => i.englishText.toLowerCase().trim() === currentMessage.englishText.toLowerCase().trim()
+        (i) =>
+          i.englishText.toLowerCase().trim() ===
+          currentMessage.englishText.toLowerCase().trim(),
       );
 
       setMatchedContent(item || null);
@@ -89,7 +94,10 @@ export default function ConversationScreen() {
     lookupContent();
   }, [currentMessage, manifest, getSource, isCached]);
 
-  const isDownloading = !!(matchedContent && downloadProgress.get(matchedContent.id)?.status === "downloading");
+  const isDownloading = !!(
+    matchedContent &&
+    downloadProgress.get(matchedContent.id)?.status === "downloading"
+  );
 
   if (!conversation) {
     return (
@@ -123,7 +131,12 @@ export default function ConversationScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.backgroundRoot }]}>
-      <View style={[styles.avatarSection, { paddingTop: headerHeight + Spacing.lg }]}>
+      <View
+        style={[
+          styles.avatarSection,
+          { paddingTop: headerHeight + Spacing.lg },
+        ]}
+      >
         <View
           style={[
             styles.avatarContainer,
@@ -140,8 +153,14 @@ export default function ConversationScreen() {
                   loop={false}
                   captions={matchedContent.gloss?.map((g, i) => ({
                     gloss: g,
-                    startMs: (matchedContent.durationMs / matchedContent.gloss.length) * i,
-                    endMs: (matchedContent.durationMs / matchedContent.gloss.length) * (i + 1),
+                    startMs:
+                      (matchedContent.durationMs /
+                        matchedContent.gloss.length) *
+                      i,
+                    endMs:
+                      (matchedContent.durationMs /
+                        matchedContent.gloss.length) *
+                      (i + 1),
                   }))}
                   englishText={currentMessage?.englishText}
                 />
@@ -158,22 +177,58 @@ export default function ConversationScreen() {
 
             {!matchedContent && (
               <View style={styles.signingArea}>
-                <View style={[styles.roleTag, { backgroundColor: currentMessage?.role === "partner" ? theme.primary + "20" : theme.accent + "20" }]}>
-                  <ThemedText type="small" style={{ color: currentMessage?.role === "partner" ? theme.primary : theme.accent, fontWeight: "600" }}>
-                    {currentMessage?.role === "partner" ? "WATCH & LEARN" : "YOUR TURN"}
+                <View
+                  style={[
+                    styles.roleTag,
+                    {
+                      backgroundColor:
+                        currentMessage?.role === "partner"
+                          ? theme.primary + "20"
+                          : theme.accent + "20",
+                    },
+                  ]}
+                >
+                  <ThemedText
+                    type="small"
+                    style={{
+                      color:
+                        currentMessage?.role === "partner"
+                          ? theme.primary
+                          : theme.accent,
+                      fontWeight: "600",
+                    }}
+                  >
+                    {currentMessage?.role === "partner"
+                      ? "WATCH & LEARN"
+                      : "YOUR TURN"}
                   </ThemedText>
                 </View>
-                <ThemedText type="body" style={[styles.signInstruction, { color: theme.text }]}>
+                <ThemedText
+                  type="body"
+                  style={[styles.signInstruction, { color: theme.text }]}
+                >
                   {currentMessage?.signDescription || ""}
                 </ThemedText>
               </View>
             )}
           </View>
 
-          <View style={[styles.englishRow, { borderTopColor: theme.backgroundDefault }]}>
-            <Feather name="message-circle" size={14} color={theme.textSecondary} />
-            <ThemedText type="body" style={{ color: theme.textSecondary, flex: 1 }}>
-              "{currentMessage?.englishText || ""}"
+          <View
+            style={[
+              styles.englishRow,
+              { borderTopColor: theme.backgroundDefault },
+            ]}
+          >
+            <Feather
+              name="message-circle"
+              size={14}
+              color={theme.textSecondary}
+            />
+            <ThemedText
+              type="body"
+              style={{ color: theme.textSecondary, flex: 1 }}
+            >
+              {`"${currentMessage?.englishText || ""}"`}
             </ThemedText>
             {matchedContent && !isContentCached && (
               <Button
@@ -189,7 +244,12 @@ export default function ConversationScreen() {
             {isContentCached && (
               <View style={styles.cachedBadge}>
                 <Feather name="check-circle" size={14} color={theme.success} />
-                <ThemedText type="small" style={{ color: theme.success, marginLeft: 4 }}>Saved</ThemedText>
+                <ThemedText
+                  type="small"
+                  style={{ color: theme.success, marginLeft: 4 }}
+                >
+                  Saved
+                </ThemedText>
               </View>
             )}
           </View>
@@ -232,7 +292,10 @@ export default function ConversationScreen() {
       <View
         style={[
           styles.controls,
-          { paddingBottom: insets.bottom + Spacing.lg, backgroundColor: theme.backgroundDefault },
+          {
+            paddingBottom: insets.bottom + Spacing.lg,
+            backgroundColor: theme.backgroundDefault,
+          },
         ]}
       >
         <View style={styles.controlRow}>
@@ -241,7 +304,10 @@ export default function ConversationScreen() {
             disabled={currentIndex === 0}
             style={[
               styles.controlButton,
-              { backgroundColor: theme.backgroundSecondary, opacity: currentIndex === 0 ? 0.5 : 1 },
+              {
+                backgroundColor: theme.backgroundSecondary,
+                opacity: currentIndex === 0 ? 0.5 : 1,
+              },
             ]}
           >
             <Feather name="chevron-left" size={24} color={theme.text} />
@@ -262,7 +328,10 @@ export default function ConversationScreen() {
             disabled={isComplete}
             style={[
               styles.controlButton,
-              { backgroundColor: theme.backgroundSecondary, opacity: isComplete ? 0.5 : 1 },
+              {
+                backgroundColor: theme.backgroundSecondary,
+                opacity: isComplete ? 0.5 : 1,
+              },
             ]}
           >
             <Feather name="chevron-right" size={24} color={theme.text} />

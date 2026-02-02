@@ -82,7 +82,7 @@ export default function GrammarScreen() {
                   type="caption"
                   style={{ color: theme.textSecondary }}
                 >
-                  ASL has its own grammar - it's not just signed English. Take time to learn these rules for natural signing.
+                  {`ASL has its own grammar - it's not just signed English. Take time to learn these rules for natural signing.`}
                 </ThemedText>
               </View>
             </View>

@@ -76,7 +76,10 @@ export function GrammarCard({ lesson, progress, onPress }: GrammarCardProps) {
     >
       <View style={styles.leftContent}>
         <View
-          style={[styles.iconContainer, { backgroundColor: theme.backgroundSecondary }]}
+          style={[
+            styles.iconContainer,
+            { backgroundColor: theme.backgroundSecondary },
+          ]}
         >
           <Image source={lesson.icon} style={styles.icon} contentFit="cover" />
         </View>
@@ -102,7 +105,10 @@ export function GrammarCard({ lesson, progress, onPress }: GrammarCardProps) {
               </ThemedText>
             </View>
             <View
-              style={[styles.difficultyBadge, { backgroundColor: difficultyColor + "20" }]}
+              style={[
+                styles.difficultyBadge,
+                { backgroundColor: difficultyColor + "20" },
+              ]}
             >
               <ThemedText
                 type="caption"
@@ -116,7 +122,12 @@ export function GrammarCard({ lesson, progress, onPress }: GrammarCardProps) {
       </View>
       <View style={styles.rightContent}>
         {isCompleted ? (
-          <View style={[styles.completedBadge, { backgroundColor: theme.success + "20" }]}>
+          <View
+            style={[
+              styles.completedBadge,
+              { backgroundColor: theme.success + "20" },
+            ]}
+          >
             <Feather name="check" size={16} color={theme.success} />
           </View>
         ) : progress > 0 ? (

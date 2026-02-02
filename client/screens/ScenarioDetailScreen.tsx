@@ -46,7 +46,10 @@ export default function ScenarioDetailScreen() {
       onPress={() => handleConversationPress(item.id)}
       style={({ pressed }) => [
         styles.conversationCard,
-        { backgroundColor: theme.backgroundDefault, opacity: pressed ? 0.8 : 1 },
+        {
+          backgroundColor: theme.backgroundDefault,
+          opacity: pressed ? 0.8 : 1,
+        },
         Shadows.card,
       ]}
     >
@@ -61,11 +64,12 @@ export default function ScenarioDetailScreen() {
           {item.description}
         </ThemedText>
         <View style={styles.messageCount}>
-          <Feather name="message-circle" size={14} color={theme.textSecondary} />
-          <ThemedText
-            type="caption"
-            style={{ color: theme.textSecondary }}
-          >
+          <Feather
+            name="message-circle"
+            size={14}
+            color={theme.textSecondary}
+          />
+          <ThemedText type="caption" style={{ color: theme.textSecondary }}>
             {item.messages.length} exchanges
           </ThemedText>
         </View>
